@@ -1,13 +1,16 @@
+import pytest
+from data import books
 from main import BooksCollector
+
 
 # класс TestBooksCollector объединяет набор тестов, которыми мы покрываем наше приложение BooksCollector
 # обязательно указывать префикс Test
 class TestBooksCollector:
-
     # пример теста:
     # обязательно указывать префикс test_
     # дальше идет название метода, который тестируем add_new_book_
     # затем, что тестируем add_two_books - добавление двух книг
+    @pytest.mark.skip(reason="Метод отсутсвует в классе BooksCollector")
     def test_add_new_book_add_two_books(self):
         # создаем экземпляр (объект) класса BooksCollector
         collector = BooksCollector()
@@ -22,3 +25,51 @@ class TestBooksCollector:
 
     # напиши свои тесты ниже
     # чтобы тесты были независимыми в каждом из них создавай отдельный экземпляр класса BooksCollector()
+    @pytest.mark.parametrize('film,genre', books)
+    def test_add_new_book_get_genre(self, film, genre):
+        collector = BooksCollector()
+        collector.add_new_book(film)
+        collector.set_book_genre(film, genre)
+        assert collector.get_book_genre(film) == genre
+
+    def test_add_new_book_name_more_40_result_0(self):
+        collector = BooksCollector()
+        collector.add_new_book('Книги с таким названием не существует,это для проверки')
+        assert len(collector.get_books_genre()) == 0
+
+    def test_add_new_book_name_is_0_result_0(self):
+        collector = BooksCollector()
+        collector.add_new_book('')
+        assert len(collector.get_books_genre()) == 0
+
+    def test_get_books_for_children_result_3(self, set_books_collection):
+        assert len(set_books_collection.get_books_for_children()) == 3
+
+    def test_get_books_with_specific_genre_return_result_2(self, set_books_collection):
+        assert len(set_books_collection.get_books_with_specific_genre('Детективы')) == 2
+
+    def test_get_books_genre_return_result_true(self, set_books_collection):
+        assert set_books_collection.get_book_genre('Пила') == 'Ужасы'
+
+    def test_add_book_in_favorites_result_true(self, set_books_collection):
+        count1 = len(set_books_collection.get_list_of_favorites_books())
+        set_books_collection.add_book_in_favorites('Пила')
+        set_books_collection.add_book_in_favorites('Чужой')
+        count2 = len(set_books_collection.get_list_of_favorites_books())
+        assert count2 > count1
+
+    def test_delete_book_from_favorites_result_true(self, del_favorite):
+        count1 = len(del_favorite.get_list_of_favorites_books())
+        del_favorite.delete_book_from_favorites('Пила')
+        count2 = len(del_favorite.get_list_of_favorites_books())
+        assert count2 < count1
+
+    def test_get_list_of_favorites_books_result_true(self, set_books_collection):
+        set_books_collection.add_book_in_favorites('Пила')
+        assert set_books_collection.get_list_of_favorites_books() == ['Пила']
+
+    def test_set_book_genre(self):
+        collector = BooksCollector()
+        collector.add_new_book('Пила')
+        collector.set_book_genre('Пила', 'Ужасы')
+        assert collector.get_book_genre('Пила') == 'Ужасы'
