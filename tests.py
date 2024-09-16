@@ -42,31 +42,31 @@ class TestBooksCollector:
         collector.add_new_book('')
         assert len(collector.get_books_genre()) == 0
 
-    def test_get_books_for_children_result_3(self, Set_books_collection):
-        assert len(Set_books_collection.get_books_for_children()) == 3
+    def test_get_books_for_children_result_3(self, set_books_collection):
+        assert len(set_books_collection.get_books_for_children()) == 3
 
-    def test_get_books_with_specific_genre_return_result_2(self, Set_books_collection):
-        assert len(Set_books_collection.get_books_with_specific_genre('Детективы')) == 2
+    def test_get_books_with_specific_genre_return_result_2(self, set_books_collection):
+        assert len(set_books_collection.get_books_with_specific_genre('Детективы')) == 2
 
-    def test_get_books_genre_return_result_true(self, Set_books_collection):
-        assert Set_books_collection.get_book_genre('Пила') == 'Ужасы'
+    def test_get_books_genre_return_result_true(self, set_books_collection):
+        assert set_books_collection.get_book_genre('Пила') == 'Ужасы'
 
-    def test_add_book_in_favorites_result_true(self, Set_books_collection):
-        count1 = len(Set_books_collection.get_list_of_favorites_books())
-        Set_books_collection.add_book_in_favorites('Пила')
-        Set_books_collection.add_book_in_favorites('Чужой')
-        count2 = len(Set_books_collection.get_list_of_favorites_books())
+    def test_add_book_in_favorites_result_true(self, set_books_collection):
+        count1 = len(set_books_collection.get_list_of_favorites_books())
+        set_books_collection.add_book_in_favorites('Пила')
+        set_books_collection.add_book_in_favorites('Чужой')
+        count2 = len(set_books_collection.get_list_of_favorites_books())
         assert count2 > count1
 
-    def test_delete_book_from_favorites_result_true(self, Del_favorite):
-        count1 = len(Del_favorite.get_list_of_favorites_books())
-        Del_favorite.delete_book_from_favorites('Пила')
-        count2 = len(Del_favorite.get_list_of_favorites_books())
+    def test_delete_book_from_favorites_result_true(self, del_favorite):
+        count1 = len(del_favorite.get_list_of_favorites_books())
+        del_favorite.delete_book_from_favorites('Пила')
+        count2 = len(del_favorite.get_list_of_favorites_books())
         assert count2 < count1
 
-    def test_get_list_of_favorites_books_result_true(self, Set_books_collection):
-        Set_books_collection.add_book_in_favorites('Пила')
-        assert Set_books_collection.get_list_of_favorites_books() == ['Пила']
+    def test_get_list_of_favorites_books_result_true(self, set_books_collection):
+        set_books_collection.add_book_in_favorites('Пила')
+        assert set_books_collection.get_list_of_favorites_books() == ['Пила']
 
     def test_set_book_genre(self):
         collector = BooksCollector()
